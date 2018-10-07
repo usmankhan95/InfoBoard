@@ -1,0 +1,48 @@
+﻿@using System.Activities.Expressions
+@model OnlineInfoService.ViewModels.ReportFormViewModel
+@{
+    ViewBag.Title = "ReportForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Title</h2>
+
+@using (Html.BeginForm("Save", "Report", FormMethod.Post, new {enctype = "multipart/form-data"}))
+{
+    <div class="form-group">
+        @Html.LabelFor(r => r.Report.Name)
+        @Html.TextBoxFor(r => r.Report.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(r => r.Report.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(r => r.Report.Date) e.g. 01 Jan 2000
+        @Html.TextBoxFor(r => r.Report.Date, "{0: d MMM yyyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(r => r.Report.Date)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Report.MemberId)
+        @Html.DropDownListFor(m => m.Report.MemberId, new SelectList(Model.Members, "Id", "Name"), "Select Author", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Report.MemberId)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Report.SubjectId)
+        @Html.DropDownListFor(m => m.Report.SubjectId, new SelectList(Model.Subjects, "Id", "Name"), "Select Subject", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Report.SubjectId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Report.ReportFile)
+        @Html.TextBoxFor(m => m.Report.ReportFile, new {type = "file" })
+    </div>
+
+    @Html.HiddenFor((m => m.Report.Id))
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Save</button>
+
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

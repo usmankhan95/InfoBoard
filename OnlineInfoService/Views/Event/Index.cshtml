@@ -1,0 +1,87 @@
+﻿@model IEnumerable<OnlineInfoService.Models.Event>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Events</h2>
+<p>
+    @Html.ActionLink("New Event", "New", "Event", null, new { @class = "btn btn-primary" })
+</p>
+<table id="events" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Subject</th>
+            <th>Date</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            var table = $("#events").DataTable({
+                ajax: {
+                    url: "/api/events",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function(data, type, event) {
+                            return "<a href='/Event/edit/" + event.id + "'>" + event.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "subject.name"
+                    },
+                    {
+                        data: "date",
+                        render: function(data) {
+                            var date = new Date(data);
+                            var month = date.getMonth() +1;
+                            return date.getDate() +
+                                "/" + 
+                                (month.length > 1 ? month : "0" + month) +
+                                "/" +
+                                date.getFullYear();
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function(data) {
+                            return "<button class='btn-link js-delete' data-event-id=" + data + ">Delete</button>";
+                        }
+                    }
+                    ]
+            });
+            $("#events").on("click",
+                ".js-delete",
+                function() {
+                    var button = $(this);
+
+                    bootbox.confirm("Are you sure want to delete this event?",
+                        function(result) {
+                            if (result) {
+                                $.ajax({
+                                    url: "/api/events/"+button.attr("data-event-id"),
+                                    method: "DELETE",
+                                    success: function () {
+                                        table.row(button.parents("tr")).remove().draw();
+                                    }
+                                });
+                            }
+                        });
+                });
+        });
+    </script>
+
+
+
+}
+
+

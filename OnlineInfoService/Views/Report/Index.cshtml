@@ -1,0 +1,85 @@
+﻿@model OnlineInfoService.Models.Report
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Reports</h2>
+<p>
+    @Html.ActionLink("New Report", "New", "Report", null, new { @class = "btn btn-primary" })
+</p>
+<table id="reports" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Report</th>
+            <th>Author</th>
+            <th>Published</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            var table = $("#reports").DataTable({
+                ajax: {
+                    url: "/api/reports",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function(data, type, report) {
+                            return "<a href='/report/edit/" + report.id + "'>" + report.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "member.name"
+                    },
+                    {
+                        data: "date",
+                        render: function(data) {
+                            var date = new Date(data);
+                            var month = date.getMonth() +1;
+                            return date.getDate() +
+                                "/" +
+                                (month.length > 1 ? month : "0" + month) +
+                                "/" +
+                                date.getFullYear();
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function(data) {
+                            return "<button class='btn-link js-delete' data-report-id=" + data + ">Delete</button>";
+                        }
+                    }
+                    ]
+            });
+            $("#reports").on("click",
+                ".js-delete",
+                function() {
+                    var button = $(this);
+
+                    bootbox.confirm("Are you sure want to delete this report?",
+                        function(result) {
+                            if (result) {
+                                $.ajax({
+                                    url: "/api/reports/"+button.attr("data-report-id"),
+                                    method: "DELETE",
+                                    success: function () {
+                                        table.row(button.parents("tr")).remove().draw();
+                                    }
+                                });
+                            }
+                        });
+                });
+        });
+    </script>
+
+
+
+}

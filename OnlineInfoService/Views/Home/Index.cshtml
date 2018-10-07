@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>About Us</h1>
+    <p class="lead">InfoBoard is an information service supplying details on local events members are engaged in!</p>
+    <p><a href="@Url.Action("About", "Home")" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Chair</h2>
+        <p><a href="@Url.Action("Details", "Member", new {id = @Model.Member.Id})">View profile &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Chair</h2>
+        <p><a href="@Url.Action("Details", "Member", new {id = @Model.Member.Id})">View profile &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Co-Chair</h2>
+        <p><a href="@Url.Action("Details", "Member", new {id = @Model.Member.Id})">View profile &raquo;</a></p>
+    </div>
+</div>

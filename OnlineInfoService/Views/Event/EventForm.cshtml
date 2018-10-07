@@ -1,0 +1,45 @@
+﻿@model OnlineInfoService.ViewModels.EventFormViewModel
+@{
+    ViewBag.Title = "EventForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Title</h2>
+
+@using (Html.BeginForm("Save", "Event"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Event.Name)
+        @Html.TextBoxFor(m => m.Event.Name, new {@class = "form-control"})
+        @Html.ValidationMessageFor(m => m.Event.Name)
+    </div>    
+    <div class="form-group">
+        @Html.LabelFor(m => m.Event.Date) e.g. 01 Jan 2000
+        @Html.TextBoxFor(m => m.Event.Date, "{0: d MMM yyyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Event.Date)
+    </div>  
+    <div class="form-group">
+        @Html.LabelFor(m => m.Event.Location)
+        @Html.TextBoxFor(m => m.Event.Location, new {@class = "form-control"})
+        @Html.ValidationMessageFor(m => m.Event.Location)
+    </div>  
+    <div class="form-group">
+        @Html.LabelFor(m => m.Event.SubjectId)
+        @Html.DropDownListFor(m => m.Event.SubjectId, new SelectList(Model.Subjects, "Id", "Name"),"Select Subject",new {@class = "form-control"})
+        @Html.ValidationMessageFor(m => m.Event.SubjectId)
+    </div>    
+    <div class="form-group">
+        @Html.LabelFor(m => m.Event.Description)
+        @Html.TextAreaFor(m => m.Event.Description, new {@class = "form-control"})
+        @Html.ValidationMessageFor(m => m.Event.Description)
+    </div>
+    @Html.HiddenFor(m => m.Event.Id)
+    @Html.AntiForgeryToken()
+    <button type ="submit" class="btn btn-primary">Save</button>
+
+
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqeuryval")
+}

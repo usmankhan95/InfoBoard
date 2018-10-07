@@ -1,0 +1,33 @@
+﻿@model OnlineInfoService.Models.Member
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Name</h2>
+<div>
+    <h4>@Model.Subject.Name</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Date of birth:</dt> 
+        <dd>@Model.DateOfBirth.Value.ToShortDateString()</dd>
+        
+        <dt>Address:</dt>
+        <dd>@Model.Address</dd>
+        
+        <dt>Contact:</dt>
+        <dd>@Model.ContactNumber</dd>
+        
+        <dt>Work Location:</dt>
+        <dd>@Model.WorkLocation</dd>
+        
+        <dt>Email:</dt>
+        <dd>@Model.Email</dd>
+        
+        <dt>Biography:</dt>
+        <dd>@Model.Biography</dd>
+        
+        <dt>Additional Info:</dt>
+        <dd>@Model.MoreInfo</dd>
+    </dl>
+</div>

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<OnlineInfoService.Models.Event>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Events</h2>
+
+<table id="events" class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th>Event</th>
+        <th>Subject</th>
+        <th>Date</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            var table = $("#events").DataTable({
+                ajax: {
+                    url: "/api/events",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function(data, type, event) {
+                            return "<a href='/event/details/" + event.id + "'>" + event.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "subject.name"
+                    },
+                    {
+                        data: "date",
+                        render: function(data) {
+                            var date = new Date(data);
+                            var month = date.getMonth() + 1;
+                            return date.getDate() +
+                                "/" +
+                                (month.length > 1 ? month : "0" + month) +
+                                "/" +
+                                date.getFullYear();
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+
+
+
+}
